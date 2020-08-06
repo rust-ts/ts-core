@@ -416,10 +416,8 @@ pub const FirstJSDocNode: u16 = JSDocTypeExpression;
 pub const LastJSDocNode: u16 = JSDocPropertyTag;
 pub const FirstJSDocTagNode: u16 = JSDocTag;
 pub const LastJSDocTagNode: u16 = JSDocPropertyTag;
-/* @internal */
-pub const FirstContextualKeyword: u16 = AbstractKeyword;
-/* @internal */
-pub const LastContextualKeyword: u16 = OfKeyword;
+pub(crate) const FirstContextualKeyword: u16 = AbstractKeyword;
+pub(crate) const LastContextualKeyword: u16 = OfKeyword;
 
 #[repr(u16)]
 #[derive(PartialEq, Eq, Hash, PartialOrd, Ord)]

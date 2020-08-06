@@ -1,0 +1,9 @@
+[package]
+name = "ts-core-compiler"
+version = "0.1.0"
+authors = ["LongYinan <lynweklm@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+regex = "1"
+phf = { version = "0.8", features = ["macros"] }
