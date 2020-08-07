@@ -36,7 +36,7 @@ pub enum ScriptKind {
 }
 
 #[repr(u8)]
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, PartialOrd, Ord)]
 pub enum ScriptTarget {
   ES3 = 0,
   ES5 = 1,

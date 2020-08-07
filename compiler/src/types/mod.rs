@@ -1,10 +1,13 @@
 use std::collections::HashMap;
 
+mod character_codes;
 pub mod compiler_options;
 pub mod jsx_flags;
 pub mod node_flags;
 pub mod syntax_kind;
 pub mod text_range;
+
+pub use character_codes::CharacterCodes;
 
 pub mod relation_comparison_result {
   pub const Succeeded: u8 = 1 << 0; // Should be truthy
@@ -23,6 +26,10 @@ pub enum DiagnosticCategory {
   Error,
   Suggestion,
   Message,
+}
+
+pub trait SourcefileLike {
+  fn get_position_of_line_and_character(line: u64, character: u32, allow_edits: bool) -> u64;
 }
 
 pub struct DiagnosticMessage {

@@ -1,4 +1,9 @@
+use crate::types::compiler_options::ScriptTarget;
+use crate::types::CharacterCodes;
+
+use once_cell::sync::OnceCell;
 use phf::phf_map;
+use regex;
 
 use crate::types::syntax_kind;
 
@@ -505,59 +510,55 @@ const UNICODE_ES_NEXT_IDENTIFIER_PART: [u32; 1426] = [
   917760, 917999,
 ];
 
-// /**
-//  * Test for whether a single line comment's text contains a directive.
-//  */
-// const commentDirectiveRegExSingleLine = /^\s*\/\/\/?\s*@(ts-expect-error|ts-ignore)/;
+/**
+ * Test for whether a single line comment's text contains a directive.
+ * `regex::Regex::new(r"/^\s*\/\/\/?\s*@(ts-expect-error|ts-ignore)/").unwrap()`
+ */
+static COMMENT_DIRECTIVE_REG_EX_SINGLE_LINE: OnceCell<regex::Regex> = OnceCell::new();
 
-// /**
-//  * Test for whether a multi-line comment's last line contains a directive.
-//  */
-// const commentDirectiveRegExMultiLine = /^\s*(?:\/|\*)*\s*@(ts-expect-error|ts-ignore)/;
+fn lookup_in_unicode_map(code: u32, map: &[u32]) -> bool {
+  // Bail out quickly if it couldn't possibly be in the map.
+  if code < map[0] {
+    return false;
+  }
 
-// function lookupInUnicodeMap(code: number, map: readonly number[]): boolean {
-//     // Bail out quickly if it couldn't possibly be in the map.
-//     if (code < map[0]) {
-//         return false;
-//     }
+  // Perform binary search in one of the Unicode range maps
+  let mut lo = 0;
+  let mut hi = map.len();
+  let mut mid;
 
-//     // Perform binary search in one of the Unicode range maps
-//     let lo = 0;
-//     let hi: number = map.length;
-//     let mid: number;
+  while lo + 1 < hi {
+    mid = lo + (hi - lo) / 2;
+    // mid has to be even to catch a range's beginning
+    mid -= mid % 2;
+    if map[mid] <= code && code <= map[mid + 1] {
+      return true;
+    }
 
-//     while (lo + 1 < hi) {
-//         mid = lo + (hi - lo) / 2;
-//         // mid has to be even to catch a range's beginning
-//         mid -= mid % 2;
-//         if (map[mid] <= code && code <= map[mid + 1]) {
-//             return true;
-//         }
+    if code < map[mid] {
+      hi = mid;
+    } else {
+      lo = mid + 2;
+    }
+  }
 
-//         if (code < map[mid]) {
-//             hi = mid;
-//         }
-//         else {
-//             lo = mid + 2;
-//         }
-//     }
+  return false;
+}
 
-//     return false;
-// }
-
-// /* @internal */ export function isUnicodeIdentifierStart(code: number, languageVersion: ScriptTarget | undefined) {
-//     return languageVersion! >= ScriptTarget.ES2015 ?
-//         lookupInUnicodeMap(code, unicodeESNextIdentifierStart) :
-//         languageVersion === ScriptTarget.ES5 ? lookupInUnicodeMap(code, unicodeES5IdentifierStart) :
-//             lookupInUnicodeMap(code, unicodeES3IdentifierStart);
-// }
-
-// function isUnicodeIdentifierPart(code: number, languageVersion: ScriptTarget | undefined) {
-//     return languageVersion! >= ScriptTarget.ES2015 ?
-//         lookupInUnicodeMap(code, unicodeESNextIdentifierPart) :
-//         languageVersion === ScriptTarget.ES5 ? lookupInUnicodeMap(code, unicodeES5IdentifierPart) :
-//             lookupInUnicodeMap(code, unicodeES3IdentifierPart);
-// }
+pub(crate) fn is_unicode_identifier_start(
+  code: u32,
+  language_version: Option<ScriptTarget>,
+) -> bool {
+  if let Some(version) = language_version {
+    if version >= ScriptTarget::ES2015 {
+      lookup_in_unicode_map(code, &UNICODE_ES_NEXT_IDENTIFIER_PART)
+    } else {
+      lookup_in_unicode_map(code, &UNICODE_ES5_IDENTIFIER_START)
+    }
+  } else {
+    lookup_in_unicode_map(code, &UNICODE_ES3_IDENTIFIER_START)
+  }
+}
 
 // function makeReverseMap(source: ESMap<string, number>): string[] {
 //     const result: string[] = [];
@@ -577,35 +578,31 @@ const UNICODE_ES_NEXT_IDENTIFIER_PART: [u32; 1426] = [
 //     return textToToken.get(s);
 // }
 
-// /* @internal */
-// export function computeLineStarts(text: string): number[] {
-//     const result: number[] = new Array();
-//     let pos = 0;
-//     let lineStart = 0;
-//     while (pos < text.length) {
-//         const ch = text.charCodeAt(pos);
-//         pos++;
-//         switch (ch) {
-//             case CharacterCodes.carriageReturn:
-//                 if (text.charCodeAt(pos) === CharacterCodes.lineFeed) {
-//                     pos++;
-//                 }
-//             // falls through
-//             case CharacterCodes.lineFeed:
-//                 result.push(lineStart);
-//                 lineStart = pos;
-//                 break;
-//             default:
-//                 if (ch > CharacterCodes.maxAsciiCharacter && isLineBreak(ch)) {
-//                     result.push(lineStart);
-//                     lineStart = pos;
-//                 }
-//                 break;
-//         }
-//     }
-//     result.push(lineStart);
-//     return result;
-// }
+/* @internal */
+pub(crate) fn compute_line_starts(text: String) -> Vec<usize> {
+  let mut result = vec![];
+  let mut pos = 0;
+  let mut line_start = 0;
+  let text_bytes = text.as_bytes();
+  while pos < text_bytes.len() {
+    let ch = text_bytes[pos] as u16;
+    pos = pos + 1;
+    if ch == CharacterCodes::carriageReturn as _ {
+      if text_bytes[pos] == CharacterCodes::lineFeed as _ {
+        pos = pos + 1;
+      }
+    }
+    if ch == CharacterCodes::lineFeed as _ {
+      result.push(line_start);
+      line_start = pos;
+    } else if ch > CharacterCodes::maxAsciiCharacter as _ && is_line_break(ch) {
+      result.push(line_start);
+      line_start = pos;
+    }
+  }
+  result.push(line_start);
+  return result;
+}
 
 // export function getPositionOfLineAndCharacter(sourceFile: SourceFileLike, line: number, character: number): number;
 // /* @internal */
@@ -716,23 +713,23 @@ const UNICODE_ES_NEXT_IDENTIFIER_PART: [u32; 1426] = [
 //         ch === CharacterCodes.byteOrderMark;
 // }
 
-// export function isLineBreak(ch: number): boolean {
-//     // ES5 7.3:
-//     // The ECMAScript line terminator characters are listed in Table 3.
-//     //     Table 3: Line Terminator Characters
-//     //     Code Unit Value     Name                    Formal Name
-//     //     \u000A              Line Feed               <LF>
-//     //     \u000D              Carriage Return         <CR>
-//     //     \u2028              Line separator          <LS>
-//     //     \u2029              Paragraph separator     <PS>
-//     // Only the characters in Table 3 are treated as line terminators. Other new line or line
-//     // breaking characters are treated as white space but not as line terminators.
+pub(crate) fn is_line_break(ch: u16) -> bool {
+  // ES5 7.3:
+  // The ECMAScript line terminator characters are listed in Table 3.
+  //     Table 3: Line Terminator Characters
+  //     Code Unit Value     Name                    Formal Name
+  //     \u000A              Line Feed               <LF>
+  //     \u000D              Carriage Return         <CR>
+  //     \u2028              Line separator          <LS>
+  //     \u2029              Paragraph separator     <PS>
+  // Only the characters in Table 3 are treated as line terminators. Other new line or line
+  // breaking characters are treated as white space but not as line terminators.
 
-//     return ch === CharacterCodes.lineFeed ||
-//         ch === CharacterCodes.carriageReturn ||
-//         ch === CharacterCodes.lineSeparator ||
-//         ch === CharacterCodes.paragraphSeparator;
-// }
+  return ch == CharacterCodes::lineFeed as _
+    || ch == CharacterCodes::carriageReturn as _
+    || ch == CharacterCodes::lineSeparator as _
+    || ch == CharacterCodes::paragraphSeparator as _;
+}
 
 // function isDigit(ch: number): boolean {
 //     return ch >= CharacterCodes._0 && ch <= CharacterCodes._9;
@@ -2774,25 +2771,4 @@ const UNICODE_ES_NEXT_IDENTIFIER_PART: [u32; 1426] = [
 //         return 2;
 //     }
 //     return 1;
-// }
-
-// // Derived from the 10.1.1 UTF16Encoding of the ES6 Spec.
-// function utf16EncodeAsStringFallback(codePoint: number) {
-//     Debug.assert(0x0 <= codePoint && codePoint <= 0x10FFFF);
-
-//     if (codePoint <= 65535) {
-//         return String.fromCharCode(codePoint);
-//     }
-
-//     const codeUnit1 = Math.floor((codePoint - 65536) / 1024) + 0xD800;
-//     const codeUnit2 = ((codePoint - 65536) % 1024) + 0xDC00;
-
-//     return String.fromCharCode(codeUnit1, codeUnit2);
-// }
-
-// const utf16EncodeAsStringWorker: (codePoint: number) => string = (String as any).fromCodePoint ? codePoint => (String as any).fromCodePoint(codePoint) : utf16EncodeAsStringFallback;
-
-// /* @internal */
-// export function utf16EncodeAsString(codePoint: number) {
-//     return utf16EncodeAsStringWorker(codePoint);
 // }
