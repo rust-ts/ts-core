@@ -1,13 +1,21 @@
 use std::collections::HashMap;
 
 mod character_codes;
+pub mod comment_directive;
 pub mod compiler_options;
 pub mod jsx_flags;
+pub mod modifier_flags;
 pub mod node_flags;
+pub mod source_file;
 pub mod syntax_kind;
 pub mod text_range;
+pub mod token_flags;
 
 pub use character_codes::CharacterCodes;
+pub use jsx_flags::JsxFlags::{self, JsxFlag};
+pub use modifier_flags::ModifierFlags::{self, ModifierFlag};
+pub use syntax_kind::SyntaxKinds::{self, SyntaxKind};
+pub use token_flags::TokenFlags::{self, TokenFlag};
 
 pub mod relation_comparison_result {
   pub const Succeeded: u8 = 1 << 0; // Should be truthy
@@ -26,10 +34,6 @@ pub enum DiagnosticCategory {
   Error,
   Suggestion,
   Message,
-}
-
-pub trait SourcefileLike {
-  fn get_position_of_line_and_character(line: u64, character: u32, allow_edits: bool) -> u64;
 }
 
 pub struct DiagnosticMessage {

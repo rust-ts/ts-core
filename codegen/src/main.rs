@@ -4,7 +4,7 @@ use std::fs::File;
 use std::io::{self, BufWriter, Write};
 use std::path::Path;
 
-static TextToKeywordMap: &'static str = r#"
+static TextToKeywordMap: &str = r#"
   "abstract" => syntax_kind::AbstractKeyword,
   "any" => syntax_kind::AnyKeyword,
   "as" => syntax_kind::AsKeyword,
@@ -83,7 +83,7 @@ static TextToKeywordMap: &'static str = r#"
   "of" => syntax_kind::OfKeyword,
 "#;
 
-static TextToToken: &'static str = r#"
+static TextToToken: &str = r#"
   "{" => syntax_kind::OpenBraceToken,
   "}" => syntax_kind::CloseBraceToken,
   "(" => syntax_kind::OpenParenToken,

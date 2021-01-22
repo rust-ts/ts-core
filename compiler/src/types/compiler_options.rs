@@ -36,7 +36,7 @@ pub enum ScriptKind {
 }
 
 #[repr(u8)]
-#[derive(PartialEq, Eq, PartialOrd, Ord)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Copy, Clone, Debug)]
 pub enum ScriptTarget {
   ES3 = 0,
   ES5 = 1,
@@ -50,10 +50,23 @@ pub enum ScriptTarget {
   JSON = 100,
 }
 
+impl Default for ScriptTarget {
+  fn default() -> ScriptTarget {
+    ScriptTarget::ESNext
+  }
+}
+
 #[repr(u8)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Copy, Clone, Debug)]
 pub enum LanguageVariant {
   Standard,
   JSX,
+}
+
+impl Default for LanguageVariant {
+  fn default() -> LanguageVariant {
+    LanguageVariant::Standard
+  }
 }
 
 #[repr(u8)]
