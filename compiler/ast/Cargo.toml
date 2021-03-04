@@ -1,0 +1,8 @@
+[package]
+name = "tscore_ast"
+version = "0.1.0"
+authors = ["The TS-Core Developers"]
+edition = "2018"
+
+[dependencies]
+tscore_common = { path = "../common" }

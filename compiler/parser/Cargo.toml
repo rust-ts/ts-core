@@ -1,0 +1,19 @@
+[package]
+name = "tscore_parser"
+version = "0.1.0"
+authors = ["The TS-Core Developers"]
+license = "MIT"
+edition = "2018"
+
+repository = "https://github.com/rust-ts/ts-core"
+description = """
+TypeScript General Parser.
+"""
+
+[dependencies]
+tscore_ast = { version = "0.1.0", path = "../ast" }
+tscore_common = { path = "../common" }
+tscore_lexer = { path = "../lexer" }
+
+[dev-dependencies]
+expect-test = "1.0"

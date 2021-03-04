@@ -116,3 +116,9 @@ pub struct CompilerOptions {
   pub(crate) show_config: bool,
   pub use_define_for_class_fields: bool,
 }
+
+impl Default for CompilerOptions {
+  fn default() -> Self {
+    Self { allow_js: true, ..Default::default() }
+  }
+}

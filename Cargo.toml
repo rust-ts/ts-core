@@ -1,5 +1,8 @@
 [workspace]
 members = [
+  "compiler/ast",
   "compiler/common",
-  "compiler/lexer"
+  "compiler/lexer",
+  "compiler/parser",
+  "compiler/span"
 ]

@@ -1,0 +1,6 @@
+[package]
+name = "tscore_span"
+version = "0.0.0"
+authors = ["The TS-Core Developers"]
+edition = "2018"
+

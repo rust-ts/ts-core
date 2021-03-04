@@ -3,6 +3,7 @@ pub struct TsConfigSourceFile {
 }
 
 #[repr(u8)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Copy, Clone, Debug)]
 pub enum ImportsNotUsedAsValues {
   Remove,
   Preserve,
@@ -10,6 +11,7 @@ pub enum ImportsNotUsedAsValues {
 }
 
 #[repr(u8)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Copy, Clone, Debug)]
 pub enum JsxEmit {
   None = 0,
   Preserve = 1,
@@ -18,6 +20,7 @@ pub enum JsxEmit {
 }
 
 #[repr(u8)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Copy, Clone, Debug)]
 pub enum ScriptKind {
   Unknown = 0,
   JS = 1,
@@ -31,6 +34,28 @@ pub enum ScriptKind {
    * Deferred extensions are going to be included in all project contexts.
    */
   Deferred = 7,
+}
+
+impl From<&str> for ScriptKind {
+  fn from(file_name: &str) -> Self {
+    match &file_name[file_name.rfind('.').unwrap_or(file_name.len() - 1)..] {
+      ".js" => ScriptKind::JS,
+      ".jsx" => ScriptKind::JSX,
+      ".ts" => ScriptKind::TS,
+      ".tsx" => ScriptKind::TSX,
+      ".json" => ScriptKind::JSON,
+      _ => ScriptKind::Unknown,
+    }
+  }
+}
+
+impl ScriptKind {
+  pub fn ensure_script_kind(file_name: &str, script_kind: Option<ScriptKind>) -> ScriptKind {
+    script_kind.unwrap_or_else(|| match ScriptKind::from(file_name) {
+      ScriptKind::Unknown => ScriptKind::TS,
+      k => k,
+    })
+  }
 }
 
 #[repr(u8)]
@@ -67,7 +92,17 @@ impl Default for LanguageVariant {
   }
 }
 
+impl From<ScriptKind> for LanguageVariant {
+  fn from(kind: ScriptKind) -> Self {
+    match kind {
+      ScriptKind::TSX | ScriptKind::JSX | ScriptKind::JS | ScriptKind::JSON => LanguageVariant::JSX,
+      _ => LanguageVariant::Standard,
+    }
+  }
+}
+
 #[repr(u8)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Copy, Clone, Debug)]
 pub enum ModuleKind {
   None = 0,
   CommonJS = 1,
@@ -84,12 +119,14 @@ pub enum ModuleKind {
 }
 
 #[repr(u8)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Copy, Clone, Debug)]
 pub enum ModuleResolutionKind {
   Classic = 1,
   NodeJs = 2,
 }
 
 #[repr(u8)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Copy, Clone, Debug)]
 pub enum NewLineKind {
   CarriageReturnLineFeed,
   LineFeed,
