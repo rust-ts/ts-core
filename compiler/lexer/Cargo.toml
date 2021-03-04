@@ -1,0 +1,18 @@
+[package]
+name = "tscore_lexer"
+version = "0.1.0"
+authors = ["The TS-Core Developers"]
+license = "MIT"
+edition = "2018"
+
+repository = "https://github.com/rust-ts/ts-core"
+description = """
+TypeScript lexer used by tscore. Grabbed from rustc-lexer.
+"""
+
+[dependencies]
+unicode-xid = "0.2.0"
+tscore_common = { version = "0.1.0", path = "../common" }
+
+[dev-dependencies]
+expect-test = "1.0"

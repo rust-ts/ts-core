@@ -1,0 +1,11 @@
+[package]
+name = "tscore_common"
+version = "0.1.0"
+authors = ["The TS-Core Developers"]
+license = "MIT"
+edition = "2018"
+
+repository = "https://github.com/rust-ts/ts-core"
+description = """
+Common stuff for parser and compiler
+"""
