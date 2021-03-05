@@ -1,3 +1,5 @@
+use tscore_span::Span;
+
 #[derive(PartialEq, PartialOrd, Debug)]
 pub enum TriviaToken {
   SingleLineComment,
@@ -295,5 +297,5 @@ impl TokenKind {
 
 pub struct Token {
   pub kind: TokenKind,
-  // pub span: Span,
+  pub span: Span,
 }

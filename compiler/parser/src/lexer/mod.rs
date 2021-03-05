@@ -1,12 +1,14 @@
 pub mod flags;
 
 use tscore_ast::token::TokenKind;
+use tscore_common::ScriptTarget;
 use tscore_lexer::tokenize;
 
 pub use flags::TokenFlags;
 
 pub struct Scanner<'a> {
   src: &'a str,
+  lang_version: ScriptTarget,
 
   token: TokenKind,
   token_flags: TokenFlags::TokenFlag,
@@ -14,8 +16,8 @@ pub struct Scanner<'a> {
 }
 
 impl<'a> Scanner<'a> {
-  fn new(src: &'a str) -> Self {
-    Self { src, token_flags: 0 }
+  fn new(src: &'a str, lang_version: ScriptTarget) -> Self {
+    Self { src, lang_version, token: TokenKind::Unknown, token_flags: 0, token_value: "" }
   }
 
   pub fn next_token() -> TokenKind {

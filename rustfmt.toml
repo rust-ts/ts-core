@@ -1,3 +1,8 @@
 version = "Two"
 tab_spaces = 2
 use_small_heuristics = "Max"
+
+
+ignore = [
+  "rustc/macros"
+]

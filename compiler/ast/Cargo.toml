@@ -6,3 +6,4 @@ edition = "2018"
 
 [dependencies]
 tscore_common = { path = "../common" }
+tscore_span = { path = "../span" }

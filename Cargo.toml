@@ -4,5 +4,11 @@ members = [
   "compiler/common",
   "compiler/lexer",
   "compiler/parser",
-  "compiler/span"
+  "compiler/span",
+  "rustc/rustc_arena",
+  "rustc/rustc_index",
+  "rustc/rustc_data_structures",
+  "rustc/rustc_graphviz",
+  "rustc/rustc_macros",
+  "rustc/rustc_serialize"
 ]
