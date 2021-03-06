@@ -14,6 +14,7 @@ TypeScript General Parser.
 tscore_ast = { version = "0.1.0", path = "../ast" }
 tscore_common = { path = "../common" }
 tscore_lexer = { path = "../lexer" }
+tscore_span = { path = "../span" }
 
 [dev-dependencies]
 expect-test = "1.0"

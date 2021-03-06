@@ -173,47 +173,47 @@ fn literals() {
             Token { kind: LineBreak, len: 1 }
             Token { kind: Literal { kind: Str { terminated: true }, suffix_start: 3 }, len: 3 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 4 }, len: 4 }
+            Token { kind: Literal { kind: Numeric { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 4 }, len: 4 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Binary, empty_int: false, empty_exponent: false }, suffix_start: 5 }, len: 5 }
+            Token { kind: Literal { kind: Numeric { base: Binary, empty_int: false, empty_exponent: false }, suffix_start: 5 }, len: 5 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Binary, empty_int: false, empty_exponent: false }, suffix_start: 5 }, len: 5 }
+            Token { kind: Literal { kind: Numeric { base: Binary, empty_int: false, empty_exponent: false }, suffix_start: 5 }, len: 5 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Hexadecimal, empty_int: true, empty_exponent: false }, suffix_start: 2 }, len: 2 }
+            Token { kind: Literal { kind: Numeric { base: Hexadecimal, empty_int: true, empty_exponent: false }, suffix_start: 2 }, len: 2 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Hexadecimal, empty_int: false, empty_exponent: false }, suffix_start: 5 }, len: 5 }
+            Token { kind: Literal { kind: Numeric { base: Hexadecimal, empty_int: false, empty_exponent: false }, suffix_start: 5 }, len: 5 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Hexadecimal, empty_int: false, empty_exponent: false }, suffix_start: 5 }, len: 5 }
+            Token { kind: Literal { kind: Numeric { base: Hexadecimal, empty_int: false, empty_exponent: false }, suffix_start: 5 }, len: 5 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 4 }, len: 4 }
+            Token { kind: Literal { kind: Numeric { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 4 }, len: 4 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 4 }, len: 4 }
+            Token { kind: Literal { kind: Numeric { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 4 }, len: 4 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Octal, empty_int: false, empty_exponent: false }, suffix_start: 4 }, len: 4 }
+            Token { kind: Literal { kind: Numeric { base: Octal, empty_int: false, empty_exponent: false }, suffix_start: 4 }, len: 4 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Octal, empty_int: false, empty_exponent: false }, suffix_start: 4 }, len: 4 }
+            Token { kind: Literal { kind: Numeric { base: Octal, empty_int: false, empty_exponent: false }, suffix_start: 4 }, len: 4 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 4 }, len: 4 }
+            Token { kind: Literal { kind: Numeric { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 4 }, len: 4 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 5 }, len: 5 }
+            Token { kind: Literal { kind: Numeric { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 5 }, len: 5 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Decimal, empty_int: false, empty_exponent: true }, suffix_start: 2 }, len: 2 }
+            Token { kind: Literal { kind: Numeric { base: Decimal, empty_int: false, empty_exponent: true }, suffix_start: 2 }, len: 2 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 3 }, len: 3 }
+            Token { kind: Literal { kind: Numeric { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 3 }, len: 3 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 4 }, len: 4 }
+            Token { kind: Literal { kind: Numeric { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 4 }, len: 4 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 1 }, len: 2 }
+            Token { kind: Literal { kind: Numeric { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 1 }, len: 2 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 3 }, len: 4 }
+            Token { kind: Literal { kind: Numeric { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 3 }, len: 4 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Octal, empty_int: false, empty_exponent: false }, suffix_start: 5 }, len: 6 }
+            Token { kind: Literal { kind: Numeric { base: Octal, empty_int: false, empty_exponent: false }, suffix_start: 5 }, len: 6 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Binary, empty_int: false, empty_exponent: false }, suffix_start: 5 }, len: 6 }
+            Token { kind: Literal { kind: Numeric { base: Binary, empty_int: false, empty_exponent: false }, suffix_start: 5 }, len: 6 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Hexadecimal, empty_int: false, empty_exponent: false }, suffix_start: 5 }, len: 6 }
+            Token { kind: Literal { kind: Numeric { base: Hexadecimal, empty_int: false, empty_exponent: false }, suffix_start: 5 }, len: 6 }
             Token { kind: LineBreak, len: 1 }
-            Token { kind: Literal { kind: Numberic { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 4 }, len: 5 }
+            Token { kind: Literal { kind: Numeric { base: Decimal, empty_int: false, empty_exponent: false }, suffix_start: 4 }, len: 5 }
             Token { kind: LineBreak, len: 1 }
         "#]],
   )

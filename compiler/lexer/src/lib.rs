@@ -131,7 +131,7 @@ pub enum TokenKind {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum LiteralKind {
   /// "12_u8", "0o100", "0b120i99", "123n", "0x123n", ""
-  Numberic { base: Base, empty_int: bool, empty_exponent: bool },
+  Numeric { base: Base, empty_int: bool, empty_exponent: bool },
   /// ""abc"", ""abc", "'abc'", "`abc${d}`"
   Str { terminated: bool },
 }
@@ -160,11 +160,11 @@ pub fn strip_shebang(input: &str) -> Option<usize> {
     // then it may be valid Rust code, so consider it Rust code.
     let next_non_whitespace_token = tokenize(input_tail).map(|tok| tok.kind).find(|tok| {
       !matches!(
-          tok,
-          TokenKind::Whitespace
-            | TokenKind::LineBreak
-            | TokenKind::LineComment
-            | TokenKind::BlockComment { .. }
+        tok,
+        TokenKind::Whitespace
+          | TokenKind::LineBreak
+          | TokenKind::LineComment
+          | TokenKind::BlockComment { .. }
       )
     });
     if next_non_whitespace_token != Some(TokenKind::OpenBracket) {
@@ -481,12 +481,12 @@ impl Cursor<'_> {
           true
         }
         // Just a 0.
-        _ => return Numberic { base, empty_int: false, empty_exponent: false },
+        _ => return Numeric { base, empty_int: false, empty_exponent: false },
       };
       // Base prefix was provided, but there were no digits
       // after it, e.g. "0x".
       if !has_digits {
-        return Numberic { base, empty_int: true, empty_exponent: false };
+        return Numeric { base, empty_int: true, empty_exponent: false };
       }
     } else if self.prev() == '.' {
       float = true;
@@ -513,14 +513,14 @@ impl Cursor<'_> {
           }
           _ => (),
         }
-        Numberic { base, empty_int: false, empty_exponent }
+        Numeric { base, empty_int: false, empty_exponent }
       }
       'e' | 'E' => {
         self.bump();
         let empty_exponent = !self.eat_float_exponent();
-        Numberic { base, empty_int: false, empty_exponent }
+        Numeric { base, empty_int: false, empty_exponent }
       }
-      _ => Numberic { base, empty_int: false, empty_exponent: false },
+      _ => Numeric { base, empty_int: false, empty_exponent: false },
     }
   }
 
