@@ -41,7 +41,7 @@ pub struct Prop {
 pub enum ClassElementKind {
   /// ES6 allows these as class elements.
   Semi,
-  /// separate constructor from normal method for potensial processing
+  /// separate constructor from normal method for potential processing
   Constructor(P<Fn>),
   Getter(P<Fn>),
   Setter(P<Fn>),

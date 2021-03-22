@@ -2,6 +2,7 @@ pub use BinOpToken::*;
 pub use DelimToken::*;
 pub use LitKind::*;
 pub use TokenKind::*;
+pub use TriviaKind::*;
 
 use crate::ast;
 use crate::ptr::P;
@@ -31,10 +32,7 @@ rustc_data_structures::static_assert_size!(TokenKind, 16);
 pub enum TokenKind {
   Unknown,
   Eof,
-  /// A doc comment token.
-  /// `Symbol` is the doc comment's data excluding its "quotes" (`///`, `/**`, etc)
-  /// similarly to symbols in string literal tokens.
-  DocComment(CommentKind),
+  Trivia(TriviaKind),
   // Punctuation
   OpenDelim(DelimToken),
   CloseDelim(DelimToken),
@@ -70,14 +68,22 @@ pub enum TokenKind {
   /// Only the JSDoc scanner produces Backtick.
   /// The normal scanner produces NoSubstitutionTemplateLiteral and related kinds.
   Backtick,
-  /* Literals */
+
+  /// Literals
   Literal(Lit),
 
   /// Identifier token.
-  /// Do not forget about `NtIdent` when you want to match on identifiers.
-  /// It's recommended to use `Token::(ident,uninterpolate,uninterpolated_span)` to
-  /// treat regular and interpolated identifiers in the same way.
-  Ident(Symbol, /* is_raw */ bool),
+  Ident(Symbol),
+}
+
+#[derive(Clone, Copy, PartialEq, Encodable, Decodable, Debug, HashStable_Generic)]
+pub enum TriviaKind {
+  SingleLineComment,
+  MultiLineComment,
+  NewLine,
+  Whitespace,
+  Shebang,
+  ConflictMakrer,
 }
 
 #[derive(Clone, Copy, PartialEq, Encodable, Decodable, Debug, HashStable_Generic)]
@@ -212,7 +218,7 @@ impl Token {
 
   /// Recovers a `Token` from an `Ident`. This creates a raw identifier if necessary.
   pub fn from_ast_ident(ident: Ident) -> Self {
-    Token::new(Ident(ident.name, ident.is_raw_guess()), ident.span)
+    Token::new(Ident(ident.name), ident.span)
   }
 
   /// Return this token by value and leave a dummy token in its place.
@@ -241,9 +247,9 @@ impl Token {
   }
 
   /// Returns an identifier if this token is an identifier.
-  pub fn ident(&self) -> Option<(Ident, /* is_raw */ bool)> {
+  pub fn ident(&self) -> Option<Ident> {
     match self.kind {
-      Ident(name, is_raw) => Some((Ident::new(name, self.span), is_raw)),
+      Ident(name) => Some(Ident::new(name, self.span)),
       _ => None,
     }
   }
@@ -256,20 +262,12 @@ impl Token {
   /// Returns `true` if the token is a identifier whose name is the given
   /// string slice.
   pub fn is_ident_named(&self, name: Symbol) -> bool {
-    self.ident().map_or(false, |(ident, _)| ident.name == name)
+    self.ident().map_or(false, |ident| ident.name == name)
   }
 
   /// Returns `true` if the token is either a special identifier or a keyword.
   pub fn is_reserved_ident(&self) -> bool {
-    self.is_non_raw_ident_where(Ident::is_reserved)
-  }
-
-  /// Returns `true` if the token is a non-raw identifier for which `pred` holds.
-  pub fn is_non_raw_ident_where(&self, pred: impl FnOnce(Ident) -> bool) -> bool {
-    match self.ident() {
-      Some((id, false)) => pred(id),
-      _ => false,
-    }
+    self.ident().map_or(false, Ident::is_reserved)
   }
 
   pub fn glue(&self, joint: &Token) -> Option<Token> {

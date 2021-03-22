@@ -242,9 +242,9 @@ pub fn is_line_break(c: char) -> bool {
   matches!(
     c,
     // Usual ASCII suspects
-    '\u{000A}'      // <LF> Line Feed
-      | '\u{000D}'  // <CR> Carriage Return
-      | '\u{2028}'  // <LS> Line Separator
+    '\u{000A}'     // <LF> Line Feed
+      | '\u{000D}' // <CR> Carriage Return
+      | '\u{2028}' // <LS> Line Separator
       | '\u{2029}' // <PS> Paragraph Separator
   )
 }
