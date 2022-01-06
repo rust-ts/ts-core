@@ -1,7 +1,14 @@
-[package]
-name = "ts-core"
-version = "0.1.0"
-authors = ["LongYinan <lynweklm@gmail.com>"]
-edition = "2018"
-
-[dependencies]
+[workspace]
+members = [
+  "compiler/ast",
+  "compiler/common",
+  "compiler/lexer",
+  "compiler/parser",
+  "compiler/span",
+  "rustc/rustc_arena",
+  "rustc/rustc_index",
+  "rustc/rustc_data_structures",
+  "rustc/rustc_graphviz",
+  "rustc/rustc_macros",
+  "rustc/rustc_serialize"
+]

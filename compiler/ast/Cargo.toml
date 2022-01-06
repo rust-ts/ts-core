@@ -1,0 +1,17 @@
+[package]
+name = "tscore_ast"
+version = "0.1.0"
+authors = ["The TS-Core Developers"]
+edition = "2018"
+
+[dependencies]
+tscore_common = { path = "../common" }
+tscore_lexer = { path = "../lexer" }
+tscore_span = { path = "../span" }
+rustc_serialize = { path = "../../rustc/rustc_serialize" }
+rustc_macros = { path = "../../rustc/rustc_macros" }
+rustc_data_structures = { path = "../../rustc/rustc_data_structures" }
+rustc_index = { path = "../../rustc/rustc_index" }
+smallvec = { version = "1.6.1", features = ["union", "may_dangle"] }
+bitflags = "1.2.1"
+tracing = "0.1"
